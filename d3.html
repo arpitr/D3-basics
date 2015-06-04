@@ -36,12 +36,13 @@
   <script>
     var dataArray = [20, 40 , 50];
 
+    // Define Container
     var canvas = d3.select("body")
             .append("svg")
             .attr("width",500)
-            .attr("height",500)
-            .text("Cool Appended by D3.");
+            .attr("height",500);
 
+    // Chandini Bar
     var bars = canvas
                .selectAll("rect") // Empty Selection.
                .data(dataArray)   // Data binds to selected rectangles if any.
