@@ -6,10 +6,10 @@
 </head>
 <body>
   <script>
-    var dataArray = [20, 40 , 50];
+    var dataArray = [1, 5, 10, 20, 40];
 
     var width = 500;
-    var height = 500;
+    var height = 600;
 
     var widthScale = d3.scale.linear()
                      .domain([0,60])
@@ -19,11 +19,17 @@
                 .domain([0,60])
                 .range(["red","blue"]);
 
+    var axis = d3.svg.axis()
+               .ticks(5)
+               .scale(widthScale);                
+
     // Define Container
     var canvas = d3.select("body")
             .append("svg")
             .attr("width",width)
-            .attr("height",height);
+            .attr("height",height)
+            .append('g') // Goruping Introduced!
+            .attr('transform','translate(50,50)') // Movement on groups.
 
     // Chandini Bar
     var bars = canvas
@@ -35,6 +41,11 @@
                   .attr("height", 50)
                   .attr("fill",function (d) {return color(d);})
                   .attr("y",function(d,i) {return i*100;});
+
+    // Shift axis by 500px.
+    canvas.append('g')
+      .attr("transform","translate(0,500)")
+      .call(axis);                  
 
   </script>
 </body>
