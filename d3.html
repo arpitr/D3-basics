@@ -2,50 +2,42 @@
 <html>
 <head>
   <title>D3 Tutorial</title>
-  <script src="http://d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
-    var dataArray = [1, 5, 10, 20, 40];
 
-    var width = 500;
-    var height = 600;
+    <!-- 
+      //DOM Element < Data Elements (enter)
+      //DOM Element > Data Elements (exit)
+      //DOM Element = Data Elements (update)
+    -->
+    
+    // Count of Data Elements.
+    var dataArray = [10,20];
 
-    var widthScale = d3.scale.linear()
-                     .domain([0,60])
-                     .range([0,width]);
-
-    var color = d3.scale.linear()
-                .domain([0,60])
-                .range(["red","blue"]);
-
-    var axis = d3.svg.axis()
-               .ticks(5)
-               .scale(widthScale);                
-
-    // Define Container
     var canvas = d3.select("body")
-            .append("svg")
-            .attr("width",width)
-            .attr("height",height)
-            .append('g') // Goruping Introduced!
-            .attr('transform','translate(50,50)') // Movement on groups.
+                 .append("svg")
+                 .attr("width",500)
+                 .attr("height",500);
 
-    // Chandini Bar
-    var bars = canvas
-               .selectAll("rect") // Empty Selection.
-               .data(dataArray)   // Data binds to selected rectangles if any.
-               .enter()           // Placeholder for data Arrays.
-                  .append("rect")
-                  .attr("width",function (d) { return widthScale(d);})
-                  .attr("height", 50)
-                  .attr("fill",function (d) {return color(d);})
-                  .attr("y",function(d,i) {return i*100;});
+    // Set exisiting DOM for circle.
+    var circle = canvas.append("circle")
+                 .attr("fill","red")
+                 .attr("cx",50)
+                 .attr("cy",50)
+                 .attr("r",10);
 
-    // Shift axis by 500px.
-    canvas.append('g')
-      .attr("transform","translate(0,500)")
-      .call(axis);                  
+    //
+    var circles = canvas.selectAll('circle')
+                 .data(dataArray)
+                 .attr("fill","blue")
+                 .enter()
+                    .append("circle")
+                    .attr("fill","green")
+                    .attr("cx",50)
+                    .attr("cy",50)
+                    .attr("r",10);
 
   </script>
 </body>
