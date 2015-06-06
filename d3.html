@@ -7,12 +7,6 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
-    <!-- 
-      //DOM Element < Data Elements (enter)
-      //DOM Element > Data Elements (exit)
-      //DOM Element = Data Elements (update)
-    -->
-    
     // Count of Data Elements.
     var dataArray = [10];
 
@@ -22,36 +16,26 @@
                  .attr("height",500);
 
     // Set exisiting DOM for circle.
-    var circle1 = canvas.append("circle")
-                 .attr("fill","red")
+    var circle = canvas.append("circle")
+                 .attr("fill","yellow")
                  .attr("cx",50)
                  .attr("cy",50)
                  .attr("r",10);
 
-    // Set exisiting DOM for circle.
-    var circle2 = canvas.append("circle")
-                 .attr("fill","red")
-                 .attr("cx",50)
-                 .attr("cy",100)
-                 .attr("r",10);
+   // Take me home
+   circle.transition()
+       .duration(1500)
+       .delay(200)
+       .attr('cx',200)
+       .each("start",function() { d3.select(this).attr("fill","green");})
+       .transition()
+       .attr('cy',200)
+       .transition()
+       .attr('cy',50)
+       .transition()
+       .attr('cx',50)
+       .each("end",function() {d3.select(this).attr("fill","red");});
 
-
-    // Enter Method.
-    var circles = canvas.selectAll('circle')
-                 .data(dataArray)
-                 .attr("fill","blue")
-                 .enter()
-                    .append("circle")
-                    .attr("fill","black")
-                    .attr("cx",50)
-                    .attr("cy",50)
-                    .attr("r",10);
-    // Exit Method
-    var circles = canvas.selectAll('circle')
-                 .data(dataArray)
-                 .attr("fill","yellow")
-                 .exit()
-                    .attr("fill","black")
   </script>
 </body>
 </html>
