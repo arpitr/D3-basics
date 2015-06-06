@@ -7,43 +7,51 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
-      var color = d3.scale.ordinal()
-          .range(["red","blue","orange","yellow"]);
-
-      // Some Random data.
-      var data = [10, 20 ,30, 40];
-      var r = 300;
-
+    d3.json("diagonal.json",function(error,data) {
       var canvas = d3.select('body').append("svg")
-                  .attr("width",500)
-                  .attr("height",500);
+                  .attr("width",700)
+                  .attr("height",700)
+                  .append('g')
+                      .attr("transform","translate(100,100)");
 
-      var group = canvas.append('g')
-          .attr("transform","translate(200,200)");
+      var tree = d3.layout.tree()
+          .size([400,400])
+          
+        if(error) console.log(data);
+        var nodes = tree.nodes(data);
+        console.log(nodes);
+        var links = tree.links(nodes);
 
-      var arc = d3.svg.arc()
-          .innerRadius(100)
-          .outerRadius(200);
+        var node = canvas.selectAll('.node')
+            .data(nodes)
+            .enter()
+            .append('g')
+                .attr('class',"node")
+                .attr("transform",function (d) {
+                  return "translate(" + d.y + "," + d.x + ")";
+                });
 
-      var pie = d3.layout.pie()
-          .value(function (d) { return d;});
+         node.append("circle")
+             .attr("r",5)
+             .attr("fill","steelblue");
 
-      var arcs = group.selectAll('arcs')
-          .data(pie(data))
-          .enter()
-          .append("g")
-          .attr("class","arc");
+         node.append("text")
+             .text(function (d) { return d.name;})
 
-      arcs.append('path')
-          .attr("d", arc)
-          .attr("fill",function(d) { return color(d.data);});
- 
-      arcs.append("text")
-          .attr("transform",function (d) { console.log(d);return "translate(" + arc.centroid(d) + ")";})
-          .attr("text-anchor","middle")
-          .attr("font-size","1.5em")  
-          .text(function (d) { return d.data; });
+        var diagonal = d3.svg.diagonal()
+            .projection(function (d) { return [d.y, d.x]});
 
+         canvas.selectAll(".link") 
+             .data(links)
+             .enter()
+             .append("path")
+             .attr("class","link")
+             .attr("fill","none")
+             .attr("stroke","black")
+             .attr("d",diagonal)
+
+
+      })
 
   </script>
 </body>
