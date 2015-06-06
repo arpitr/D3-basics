@@ -6,35 +6,31 @@
 <body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
+    // Load Data from file.
+    d3.json("data.json",function (error, data) {
+      
+      if (error) return console.log(error);
+      var canvas = d3.select('body').append("svg")
+                  .attr("width",500)
+                  .attr("height",500);
 
-    // Count of Data Elements.
-    var dataArray = [10, 20, 30, 40 ];
+      canvas.selectAll('rect')
+        .data(data)
+        .enter()
+          .append('rect')
+          .attr('width',function (d) { return d.age * 10;})
+          .attr('height',48)
+          .attr('y',function (d,i) {return i*50;})
+          .attr('fill',"blue");
 
-    //Sort in descedning
-    console.log(dataArray.sort(d3.descending));
-
-    // Min in array.
-    console.log(d3.min(dataArray));
-
-    // Max in array
-    console.log(d3.max(dataArray));
-
-    // Lower and Upper limit in array
-    console.log(d3.extent(dataArray));
-
-    // Sum of all.
-    console.log(d3.sum(dataArray));
-
-    // Get Mean.
-    console.log(d3.mean(dataArray));
-
-    // Get Median.
-    console.log(d3.median(dataArray));
-
-    // Shuffle array elements.
-    console.log(d3.shuffle(dataArray));
-
-
+      canvas.selectAll("text")
+          .data(data)
+          .enter()
+            .append("text")
+            .attr("fill","white")
+            .attr('y',function (d,i) {return i*50 + 24;})
+            .text(function (d) { return d.name});
+    })
   </script>
 </body>
 </html>
