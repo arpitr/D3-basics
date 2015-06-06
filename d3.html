@@ -6,39 +6,28 @@
 <body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
-    // Load Data from file.
-    d3.json("data.json",function (error, data) {
 
-      if (error) return console.log(error);
       var canvas = d3.select('body').append("svg")
                   .attr("width",500)
                   .attr("height",500);
 
-      // Data to create line with it.
-      var data = [
-          {"x":10,"y":20},
-          {"x":20,"y":30},
-          {"x":30,"y":40},
-      ];
+      var r = 100;
+      var p = Math.PI * 2;
+
+      var group = canvas.append('g')
+        .attr("transform","translate(150,150)");
 
       // Translate data to path <d> attribute.
-      var line = d3.svg.line()
-        .x(function(d) { return d.x;})
-        .y(function(d) { return d.y;});
-
+      var arc = d3.svg.arc()
+          .innerRadius(r-20)
+          .outerRadius(r)
+          .startAngle(0)
+          .endAngle(p -1);
 
       // Create path with the data cordinates.
-      canvas.selectAll("path")
-      .data([data])
-      .enter()
-      .append("path")
-      .attr("d",line)
-      .attr("fill","none")
-      .attr("stroke","black")
-      .attr("stroke-width",10);
-
-    })
-
+      group.append("path")
+      .attr("d",arc);
+      
   </script>
 </body>
 </html>
