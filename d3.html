@@ -8,33 +8,32 @@
   <script>
 
     // Count of Data Elements.
-    var dataArray = [10];
+    var dataArray = [10, 20, 30, 40 ];
 
-    var canvas = d3.select("body")
-                 .append("svg")
-                 .attr("width",500)
-                 .attr("height",500);
+    //Sort in descedning
+    console.log(dataArray.sort(d3.descending));
 
-    // Set exisiting DOM for circle.
-    var circle = canvas.append("circle")
-                 .attr("fill","yellow")
-                 .attr("cx",50)
-                 .attr("cy",50)
-                 .attr("r",10);
+    // Min in array.
+    console.log(d3.min(dataArray));
 
-   // Take me home
-   circle.transition()
-       .duration(1500)
-       .delay(200)
-       .attr('cx',200)
-       .each("start",function() { d3.select(this).attr("fill","green");})
-       .transition()
-       .attr('cy',200)
-       .transition()
-       .attr('cy',50)
-       .transition()
-       .attr('cx',50)
-       .each("end",function() {d3.select(this).attr("fill","red");});
+    // Max in array
+    console.log(d3.max(dataArray));
+
+    // Lower and Upper limit in array
+    console.log(d3.extent(dataArray));
+
+    // Sum of all.
+    console.log(d3.sum(dataArray));
+
+    // Get Mean.
+    console.log(d3.mean(dataArray));
+
+    // Get Median.
+    console.log(d3.median(dataArray));
+
+    // Shuffle array elements.
+    console.log(d3.shuffle(dataArray));
+
 
   </script>
 </body>
