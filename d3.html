@@ -7,6 +7,9 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
+      var width =  800;
+      var height = 740;
+      var padding = 50;
       d3.csv('histogram.csv',function (error,data) {
       console.log(data);
 
@@ -17,9 +20,30 @@
           .bins(5)
           (map)
 
+      var y = d3.scale.linear()
+          .domain([0,d3.max(histogram.map(function (i) { return i.length;}))])
+          .range([0,height]);
+
+      var x = d3.scale.linear()
+          .domain([0,d3.max(map)])
+          .range([0,width]);
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+      
+      console.log(histogram);
+      console.log(histogram.map(function(i) { return i.length;}));
+
       var canvas = d3.select("body").append('svg')
-          .attr('width',800)
-          .attr('height',800);
+          .attr('width',width)
+          .attr('height',height + padding)
+          .append("g")
+              .attr("transform","translate(20,0)");
+
+      var group = canvas.append('g')
+          .attr("transform","translate(0," + height +")")
+          .call(xAxis);
 
       var bars = canvas.selectAll('.bar')
           .data(histogram)
@@ -27,11 +51,20 @@
           .append('g');
 
       bars.append('rect')
-          .attr("x",function(d) { return d.x * 5;})
-          .attr("y",0)
+          .attr("x",function(d) { console.log(d);return x(d.x);})
+          .attr("y",function(d) { return height - y(d.y);})
           .attr("fill","steelblue")
-          .attr("width", function (d) { return d.dx * 5 -5;})
-          .attr("height", function (d) {return d.y * 10;});
+          .attr("width", function (d) { return x(d.dx -5);})
+          .attr("height", function (d) { return y(d.y); });
+
+      bars.append('text')
+          .attr('x',function (d) { return x(d.x);})
+          .attr('y',function (d) { return height - y(d.y);})
+          .attr("dy","20px")
+          .attr("dx",function (d) { return x(d.x)/2;})
+          .attr("fill","black")
+          .attr("text-anchor","middle")
+          .text(function (d) { return d.y;});
 
       })
       
