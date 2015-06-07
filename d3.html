@@ -7,52 +7,34 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
-    d3.json("diagonal.json",function(error,data) {
-      var canvas = d3.select('body').append("svg")
-                  .attr("width",700)
-                  .attr("height",700)
-                  .append('g')
-                      .attr("transform","translate(100,100)");
+      d3.csv('histogram.csv',function (error,data) {
+      console.log(data);
 
-      var tree = d3.layout.tree()
-          .size([400,400])
-          
-        if(error) console.log(data);
-        var nodes = tree.nodes(data);
-        console.log(nodes);
-        var links = tree.links(nodes);
+      var map = data.map(function (d) { return parseInt(d.age)});
+      console.log(map);
 
-        var node = canvas.selectAll('.node')
-            .data(nodes)
-            .enter()
-            .append('g')
-                .attr('class',"node")
-                .attr("transform",function (d) {
-                  return "translate(" + d.y + "," + d.x + ")";
-                });
+      var histogram = d3.layout.histogram()
+          .bins(5)
+          (map)
 
-         node.append("circle")
-             .attr("r",5)
-             .attr("fill","steelblue");
+      var canvas = d3.select("body").append('svg')
+          .attr('width',800)
+          .attr('height',800);
 
-         node.append("text")
-             .text(function (d) { return d.name;})
+      var bars = canvas.selectAll('.bar')
+          .data(histogram)
+          .enter()
+          .append('g');
 
-        var diagonal = d3.svg.diagonal()
-            .projection(function (d) { return [d.y, d.x]});
-
-         canvas.selectAll(".link") 
-             .data(links)
-             .enter()
-             .append("path")
-             .attr("class","link")
-             .attr("fill","none")
-             .attr("stroke","black")
-             .attr("d",diagonal)
-
+      bars.append('rect')
+          .attr("x",function(d) { return d.x * 5;})
+          .attr("y",0)
+          .attr("fill","steelblue")
+          .attr("width", function (d) { return d.dx * 5 -5;})
+          .attr("height", function (d) {return d.y * 10;});
 
       })
-
+      
   </script>
 </body>
 </html>
